@@ -28,18 +28,32 @@ const { default: axios } = require('axios');
 
 
 france({ nomCom: 'ping',
-    desc: 'To check ping',
-    Categorie: 'General',
-    reaction: '👁', 
-    fromMe: 'true', 
-
-       
+    categorie: 'General',
+    reaction: '👁',
+    alias: ['p']
   },
-  async (dest, zk, commandeOptions) => {
-    const { ms, arg, repondre } = commandeOptions;
-    const { start} = new Date().getTime()
-    return repondre('*𝐏𝐨𝐧𝐠»»»*\n ```' + 2000 + '``` *ms*') 
-    const { end } = new Date().getTime()
-    await zok.sendMessage('*𝐏𝐨𝐧𝐠»»*\n ```' + (end - start) + '``` *ms*')
+
+  async (dest, zk, commandOptions) => {
+    const {
+      ms, arg, repondre
+    } = commandOptions;
+    const start = new Date().getTime();
+    const msg = await zk.sendMessage(dest, {
+      text: 'Pinging...',
+    }, {
+      quoted: ms
+    });
+    const end = new Date().getTime();
+    const ping = end - start;
+    await zk.sendMessage(dest, {
+      text: `𝐇𝐔𝐍𝐂𝐇𝐎 𝐒𝐏𝐄𝐄𝐃 𝐈𝐒 ${ping}𝐌/𝐒`, edit: {
+        id: msg.key.id, remoteJid: dest
+      }});
+    await zk.sendMessage(dest, {
+      react: {
+        text: "⚪", key: ms.key
+      }})
   }
 )
+
+ 
